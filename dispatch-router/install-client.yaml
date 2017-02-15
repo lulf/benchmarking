@@ -1,0 +1,23 @@
+---
+- hosts: dsal_clients
+  remote_user: root
+  tasks:
+    - name: copy start sender
+      copy: src=start_sender.sh dest=/root/start_sender.sh mode=0755
+    - name: copy start receiver
+      copy: src=start_receiver.sh dest=/root/start_receiver.sh mode=0755
+    - name: add systemd sender service file
+      copy: src=ebench_sender.service dest=/usr/lib/systemd/system/ebench_sender.service
+    - name: add systemd receiver service file
+      copy: src=ebench_receiver.service dest=/usr/lib/systemd/system/ebench_receiver.service
+    - name: copy client
+      copy: src=ebench-agent.tar dest=/root/ebench-agent.tar
+    - name: extract client
+      raw: cd /root && tar xvf ebench-agent.tar
+    - name: copy client list
+      copy: src=clienthosts dest=/root/clienthosts
+    - name: copy collector binary
+      copy: src=ebench-collector.tar dest=/root/ebench-collector.tar
+    - name: extract collector
+      raw: cd /root && tar xvf ebench-collector.tar
+

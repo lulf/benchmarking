@@ -1,0 +1,7 @@
+[Unit]
+Description=Ebench sender service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/root/start_senders.sh

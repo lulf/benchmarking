@@ -1,0 +1,14 @@
+---
+- hosts: dsal_clients
+  remote_user: root
+  tasks:
+    - name: copy host list
+      copy: src=routerhosts dest=/root/routerhosts
+    - name: copy start receivers
+      copy: src=start_receivers.sh dest=/root/start_receivers.sh mode=0755
+    - name: copy start senders
+      copy: src=start_senders.sh dest=/root/start_senders.sh mode=0755
+    - name: start receivers
+      shell: systemctl start ebench_receiver
+    - name: start senders
+      shell: systemctl start ebench_sender

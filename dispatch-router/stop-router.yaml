@@ -1,0 +1,6 @@
+---
+- hosts: dsal_routers
+  remote_user: root
+  tasks:
+    - name: stop router daemon
+      shell: systemctl stop dispatchrouter

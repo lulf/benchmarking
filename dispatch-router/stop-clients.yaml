@@ -1,0 +1,8 @@
+---
+- hosts: dsal_clients
+  remote_user: root
+  tasks:
+    - name: stop senders
+      shell: systemctl stop ebench_sender
+    - name: stop receivers
+      shell: systemctl stop ebench_receiver

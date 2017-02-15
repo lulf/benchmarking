@@ -1,0 +1,7 @@
+[Unit]
+Description=Dispatch router service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/qdrouterd -c /root/router.conf

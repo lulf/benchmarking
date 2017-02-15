@@ -1,0 +1,6 @@
+---
+- hosts: dsal_routers
+  remote_user: root
+  tasks:
+    - name: start router daemon
+      shell: systemctl start dispatchrouter

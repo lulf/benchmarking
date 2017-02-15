@@ -1,0 +1,7 @@
+[Unit]
+Description=Ebench receiver service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/root/start_receivers.sh

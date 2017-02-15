@@ -1,0 +1,25 @@
+---
+- hosts: dsal
+  remote_user: root
+  tasks:
+    - name: setup 10GbE
+      copy: src=setupnetwork.sh dest=/root/setupnetwork.sh mode=0755
+    - name: install 10GbE settings
+      shell: /root/setupnetwork.sh
+    - name: install router dependencies
+      raw: yum install -y java-1.8.0-openjdk gcc cmake libuuid-devel openssl-devel swig python-devel gcc-c++ cmake make wget patch
+    - name: download qpid proton master
+      raw: wget http://github.com/apache/qpid-proton/archive/master.tar.gz -O qpid-proton.tar.gz
+    - name: download qpid dispatch master
+      raw: wget http://github.com/apache/qpid-dispatch/archive/master.tar.gz -O qpid-dispatch.tar.gz
+    - name: build and install proton
+      raw: mkdir -p /root/qpid-proton-src /root/proton_build && tar -xzf /root/qpid-proton.tar.gz -C /root/qpid-proton-src --strip-components 1 && cd /root/proton_build && cmake -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_CPP=OFF -DBUILD_PERL=OFF -DBUILD_RUBY=OFF -DBUILD_JAVA=OFF -DBUILD_GO=OFF -DBUILD_JAVASCRIPT=OFF -DBUILD_PHP=OFF /root/qpid-proton-src && make && make install
+    - name: copy mesh fix patch
+      copy: src=meshfix.patch dest=/root/meshfix.patch
+    - name: extract and patch router
+      raw: mkdir -p /root/qpid-dispatch-src /root/dispatch_build && tar -xzf /root/qpid-dispatch.tar.gz -C /root/qpid-dispatch-src --strip-components 1 && /usr/bin/patch -d qpid-dispatch-src -p1 < /root/meshfix.patch
+    - name: build and install dispatch
+      raw: cd /root/dispatch_build && cmake -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_DOCS=OFF -DCONSOLE_INSTALL=OFF /root/qpid-dispatch-src && make && make install
+    - name: add systemd service file
+      copy: src=router.service dest=/usr/lib/systemd/system/dispatchrouter.service
+
