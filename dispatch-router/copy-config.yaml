@@ -3,6 +3,6 @@
   remote_user: root
   tasks:
     - name: copy router configuration files
-      copy: src=routerscale/generated dest=/root/routerconf
+      copy: src=full-network/generated dest=/root/routerconf
     - name: install config file for this host
       raw: cp -rvf /root/routerconf/generated/router_${HOSTNAME}.conf /root/router.conf

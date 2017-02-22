@@ -4,4 +4,4 @@ After=syslog.target network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/sbin/qdrouterd -c /root/router.conf
+ExecStart=/root/start_router.sh

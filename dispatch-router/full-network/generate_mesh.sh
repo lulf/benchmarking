@@ -8,8 +8,8 @@ for entry in $HOSTNAMES
 do
     echo $i
     name="Router_$i"
-    host=`echo $entry | cut -d ':' -f 1`
-    ip=`echo $entry | cut -d ':' -f 2`
+    host=`echo $entry | cut -d ':' -f 2`
+    ip=`echo $entry | cut -d ':' -f 1`
     cat router_template.conf | ROUTER_ID=$name envsubst > generated/router_$host.conf
     for generated in $GENERATED
     do

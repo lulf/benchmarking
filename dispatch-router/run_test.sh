@@ -6,6 +6,7 @@ for i in `seq 1 10`
 do
     ansible-playbook stop-clients.yaml
     head -n $i routerhosts.orig > routerhosts
+
     sleep 10
     ansible-playbook start-clients.yaml
     chosts=`cat clienthosts | awk '{ print $0":8080" }' | tr '\n' ','`
