@@ -12,15 +12,18 @@ OUTPUT_FILE="consumer_test_result.dat"
 
 f = open(OUTPUT_FILE, "w")
 
+f.write("#shards consumers consumer_throughput producer_throughput producer_response_max producer_response_99p\n")
 for shards in range(1, MAX_SHARDS + 1):
     benchmark.reset(ADDRESS)
     num_pods = benchmark.scale_and_wait(ADDRESS, shards)
     time.sleep(60)
     for consumers in range(1, MAX_CONSUMERS + 1):
-        benchmark.scale_and_wait("benchmark-consumer", consumers, num_pods)
-        num_pods += 1
         if consumers == 1:
-            num_pods = benchmark.scale_and_wait("benchmark-producer", 1, num_pods)
+            benchmark.scale_and_wait("benchmark-consumer", consumers, num_pods)
+            benchmark.scale_and_wait("benchmark-producer", 1, num_pods + 1)
+        else:
+            benchmark.scale_and_wait("benchmark-consumer", consumers, num_pods + 1)
+
         time.sleep(INTERVAL)
 
         consumer_metrics = benchmark.fetch_metrics(CONSUMER_URL)
@@ -30,7 +33,7 @@ for shards in range(1, MAX_SHARDS + 1):
         p_maxresponse = producer_metrics["latencies"]["max"]
         p_99presponse = producer_metrics["latencies"]["99p"]
 
-        f.write("%d %d %.2f %.2f %.2f %.2f" % (shards, consumers, c_throughput, p_throughput, p_maxresponse, p_99presponse))
+        f.write("%d %d %.2f %.2f %.2f %.2f\n" % (shards, consumers, float(c_throughput), float(p_throughput), float(p_maxresponse), float(p_99presponse)))
         f.flush()
 
 benchmark.reset(ADDRESS)
