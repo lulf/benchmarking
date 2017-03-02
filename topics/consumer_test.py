@@ -11,9 +11,10 @@ CONSUMER_URL="http://metrics.10.12.56.17.nip.io/metrics/consumer"
 
 for shards in range(1, MAX_SHARDS + 1):
     benchmark.reset(ADDRESS)
-    expected_pods = benchmark.scale_and_wait(ADDRESS, shards)
+    base_pods = benchmark.scale_and_wait(ADDRESS, shards)
+    time.sleep(60)
     for consumers in range(1, MAX_CONSUMERS):
-        expected_pods = benchmark.scale_and_wait("benchmark-consumer", consumers, expected_pods)
+        expected_pods = benchmark.scale_and_wait("benchmark-consumer", consumers, base_pods)
         expected_pods = benchmark.scale_and_wait("benchmark-producer", 1, expected_pods)
         time.sleep(INTERVAL)
 
