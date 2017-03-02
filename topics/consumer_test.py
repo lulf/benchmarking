@@ -31,6 +31,7 @@ for shards in range(1, MAX_SHARDS + 1):
         p_99presponse = producer_metrics["latencies"]["99p"]
 
         f.write("%d %d %.2f %.2f %.2f %.2f" % (shards, consumers, c_throughput, p_throughput, p_maxresponse, p_99presponse))
+        f.flush()
 
 benchmark.reset(ADDRESS)
 f.close()
