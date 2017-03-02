@@ -30,7 +30,7 @@ def wait_for_running_pods(num_pods):
 
 def wait_for_pods(num_pods):
     actual_pods = 0
-    eprint("Waiting for " + str(num_pods) + " pods")
+    eprint("Waiting for " + str(num_pods) + " running pods")
     while actual_pods != num_pods:
         p1 = subprocess.Popen(["oc", "get", "pods"], stdout=subprocess.PIPE)
         p2 = subprocess.Popen(["grep", "-v", "STATUS"], stdin=p1.stdout, stdout=subprocess.PIPE)
