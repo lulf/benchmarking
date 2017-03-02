@@ -5,7 +5,7 @@ import benchmark
 MAX_SHARDS=4
 MAX_CONSUMERS=20
 ADDRESS="a"
-INTERVAL=30
+INTERVAL=96
 PRODUCER_URL="http://metrics.10.12.56.17.nip.io/metrics/producer"
 CONSUMER_URL="http://metrics.10.12.56.17.nip.io/metrics/consumer"
 
