@@ -41,6 +41,7 @@ def scale_and_wait(deployment, replicas, current_pods=BASE_PODS):
     scale(deployment, replicas)
     expected_pods = current_pods + replicas
     wait_for_running_pods(expected_pods)
+    wait_for_pods(expected_pods)
     return expected_pods
 
 def reset(address):

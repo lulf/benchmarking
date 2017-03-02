@@ -18,11 +18,8 @@ for shards in range(1, MAX_SHARDS + 1):
     num_pods = benchmark.scale_and_wait(ADDRESS, shards)
     time.sleep(60)
     for consumers in range(1, MAX_CONSUMERS + 1):
-        if consumers == 1:
-            benchmark.scale_and_wait("benchmark-consumer", consumers, num_pods)
-            benchmark.scale_and_wait("benchmark-producer", 1, num_pods + 1)
-        else:
-            benchmark.scale_and_wait("benchmark-consumer", consumers, num_pods + 1)
+        benchmark.scale_and_wait("benchmark-consumer", consumers, num_pods)
+        benchmark.scale_and_wait("benchmark-producer", 1, num_pods + consumers)
 
         time.sleep(INTERVAL)
 
@@ -35,6 +32,9 @@ for shards in range(1, MAX_SHARDS + 1):
 
         f.write("%d %d %.2f %.2f %.2f %.2f\n" % (shards, consumers, float(c_throughput), float(p_throughput), float(p_maxresponse), float(p_99presponse)))
         f.flush()
+
+        benchmark.scale_and_wait("benchmark-producer", 0, num_pods + consumers)
+        benchmark.scale_and_wait("benchmark-consumer", 0, num_pods)
 
 benchmark.reset(ADDRESS)
 f.close()
