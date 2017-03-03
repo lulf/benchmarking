@@ -4,7 +4,7 @@ the [producer](https://github.com/EnMasseProject/openshift-configuration/blob/ma
 Once you have configured a topic, you can instantiate the consumer:
 
 ```
-oc process -f topic-consumer-template.json ADDRESS=mytopic MESSAGE_SIZE=256 DURATION=3600 REPORT_INTERVAL=30
+oc process -f topic-consumer-template.json ADDRESS=mytopic MESSAGE_SIZE=256 DURATION=3600 REPORT_INTERVAL=30 | oc create -f -
 ```
 
 This will create
@@ -18,7 +18,7 @@ The metric collector will output a json snapshot of the latest collected metrics
 The producer is instantiated in the same way, but with an extra argument controlling the SEND_RATE (0 means max):
 
 ```
-oc process -f topic-producer-template.json ADDRESS=mytopic MESSAGE_SIZE=256 DURATION=3600 REPORT_INTERVAL=30 SEND_RATE=3000
+oc process -f topic-producer-template.json ADDRESS=mytopic MESSAGE_SIZE=256 DURATION=3600 REPORT_INTERVAL=30 SEND_RATE=3000 | oc create -f -
 ```
 
 This will create
