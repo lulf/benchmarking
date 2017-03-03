@@ -4,7 +4,7 @@ import benchmark
 
 MAX_SHARDS=4
 MAX_CONSUMERS=16
-ADDRESS="a"
+ADDRESS="mytopic"
 INTERVAL=96
 PRODUCER_URL="http://metrics.10.12.56.17.nip.io/metrics/producer"
 CONSUMER_URL="http://metrics.10.12.56.17.nip.io/metrics/consumer"
@@ -14,7 +14,7 @@ f = open(OUTPUT_FILE, "w")
 
 f.write("#shards consumers consumer_throughput producer_throughput producer_response_max producer_response_99p\n")
 for shards in range(1, MAX_SHARDS + 1):
-    benchmark.reset(ADDRESS)
+    #benchmark.reset(ADDRESS)
     num_pods = benchmark.scale_and_wait(ADDRESS, shards)
     time.sleep(60)
     for consumers in range(1, MAX_CONSUMERS + 1):
